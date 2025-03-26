@@ -1,14 +1,20 @@
+# --- Dockerfile ---
 FROM quay.io/keycloak/keycloak:24.0.2
 
-ENV KEYCLOAK_ADMIN=admin
-ENV KEYCLOAK_ADMIN_PASSWORD=admin
+# 创建可写目录并复制脚本
+USER root
+RUN mkdir -p /opt/keycloak/scripts
+COPY parse-heroku-env.sh /opt/keycloak/scripts/
+RUN chmod +x /opt/keycloak/scripts/parse-heroku-env.sh
 
-# === 🔁 将 Heroku 的 DATABASE_URL 拆解为 Keycloak 环境变量 ===
-COPY parse-heroku-env.sh /opt/keycloak/parse-heroku-env.sh
-RUN chmod +x /opt/keycloak/parse-heroku-env.sh && /opt/keycloak/parse-heroku-env.sh
-
-# === ⚙️ 构建 Keycloak 配置 ===
+# 执行 build
 RUN /opt/keycloak/bin/kc.sh build
 
-# === ✅ 启动 Keycloak 使用 Heroku 推荐参数 ===
-CMD ["start", "--proxy=edge", "--hostname-strict=false", "--http-port=${PORT}"]
+# 切换为默认用户
+USER 1000
+
+# 启动前先解析 Heroku 环境变量
+ENTRYPOINT ["/opt/keycloak/scripts/parse-heroku-env.sh"]
+
+# 启动 Keycloak
+CMD ["/opt/keycloak/bin/kc.sh", "start", "--proxy=edge", "--hostname-strict=false", "--http-port=8080"]
