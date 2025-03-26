@@ -13,6 +13,8 @@ RUN /opt/keycloak/bin/kc.sh build
 # 切换为默认用户
 USER 1000
 
+EXPOSE 8080
+
 # 启动前先解析 Heroku 环境变量
 ENTRYPOINT ["/opt/keycloak/scripts/parse-heroku-env.sh"]
 
