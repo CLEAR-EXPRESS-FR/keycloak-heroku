@@ -17,4 +17,4 @@ USER 1000
 ENTRYPOINT ["/opt/keycloak/scripts/parse-heroku-env.sh"]
 
 # 启动 Keycloak
-CMD ["/opt/keycloak/bin/kc.sh", "start", "--proxy=edge", "--hostname-strict=false", "--http-port=8080"]
+CMD ["/opt/keycloak/bin/kc.sh", "start", "--proxy=edge", "--hostname-strict=false", "--http-port=${PORT}"]
