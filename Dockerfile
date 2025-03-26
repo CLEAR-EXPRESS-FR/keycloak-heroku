@@ -4,4 +4,4 @@ RUN /opt/keycloak/bin/kc.sh build
 
 EXPOSE 8080
 
-CMD sh -c "/opt/keycloak/bin/kc.sh start --proxy=edge --hostname-strict=false --http-port=${PORT}"
+CMD ["/opt/keycloak/bin/kc.sh", "start", "--proxy=edge", "--hostname-strict=false", "--http-port=${PORT}"]
