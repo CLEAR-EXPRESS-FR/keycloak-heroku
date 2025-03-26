@@ -1,6 +1,9 @@
 # --- Dockerfile ---
 FROM quay.io/keycloak/keycloak:24.0.2
 
+ENV KEYCLOAK_ADMIN=admin
+ENV KEYCLOAK_ADMIN_PASSWORD=admin
+
 # 创建可写目录并复制脚本
 USER root
 RUN mkdir -p /opt/keycloak/scripts
